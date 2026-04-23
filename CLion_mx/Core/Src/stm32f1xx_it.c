@@ -20,8 +20,11 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f1xx_it.h"
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -249,6 +252,31 @@ void USART1_IRQHandler(void)
 {
   /* USER CODE BEGIN USART1_IRQn 0 */
 
+  /*串口*/
+  {
+    if(__HAL_UART_GET_FLAG(&huart1, UART_FLAG_IDLE) != RESET)
+    {
+      __HAL_UART_CLEAR_IDLEFLAG(&huart1);
+
+
+      HAL_UART_DMAStop(&huart1);
+
+
+
+
+
+
+      HAL_UART_Receive_DMA(&huart1,U1_RxBuff,256);
+
+
+
+
+
+
+    }
+  }
+  /*串口end*/
+
   /* USER CODE END USART1_IRQn 0 */
   HAL_UART_IRQHandler(&huart1);
   /* USER CODE BEGIN USART1_IRQn 1 */
@@ -259,3 +287,4 @@ void USART1_IRQHandler(void)
 /* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */
+

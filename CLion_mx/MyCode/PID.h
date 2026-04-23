@@ -1,5 +1,5 @@
-#ifndef __PID_H
-#define __PID_H
+#ifndef PID_H
+#define PID_H
 
 typedef struct {
 	//内部参数

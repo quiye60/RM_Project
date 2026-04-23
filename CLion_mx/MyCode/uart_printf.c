@@ -14,7 +14,7 @@ UCB  ucb1;
 UCB  ucb2;
 UCB  ucb3;
 
-uint8_t U1_RxBuff[U1_RX_SIZE]="****************************************************\n****************************************************\n****************************************************\n****************************************************\n****************************************************\n****************************************************\n****************************************************\n****************************************************\n****************************************************\n****************************************************\n****************************************************\n";
+uint8_t U1_RxBuff[U1_RX_SIZE]="";
 uint8_t U1_TxBuff[U1_TX_SIZE];
 
 uint8_t U2_RxBuff[U2_RX_SIZE];
@@ -213,8 +213,6 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
 
 
 
-
-
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {	
 	if(huart->Instance == USART1){
@@ -227,16 +225,44 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 }
 
 
+/*
+void USART1_IRQHandler(void)
+{
+
+	if(__HAL_UART_GET_FLAG(&huart1, UART_FLAG_IDLE) != RESET)
+	{
+		__HAL_UART_CLEAR_IDLEFLAG(&huart1);
+
+
+		HAL_UART_DMAStop(&huart1);
+
+
+		// rx_len = RX_SIZE - __HAL_DMA_GET_COUNTER(huart1.hdmarx);
+		//time=10;
+
+
+		HAL_UART_Receive_DMA(&huart1,U1_RxBuff,256);
+	}
+
+	HAL_UART_IRQHandler(&huart1);
+}
+
+*/
 
 
 
 
 
-
-
-
+/*
 void HAL_UART_AbortReceiveCpltCallback(UART_HandleTypeDef *huart)
 {
+
+
+
+
+	time=9999;
+
+
 	if(huart->Instance == USART1){
 		ucb1.RxInPtr->end = &U1_RxBuff[ucb1.RxCounter - 1];
 		ucb1.RxInPtr++;
@@ -278,3 +304,4 @@ void HAL_UART_AbortReceiveCpltCallback(UART_HandleTypeDef *huart)
 		HAL_UART_Receive_DMA(&ucb3.uart,ucb3.RxInPtr->start,U3_RX_MAX);
 	}
 }
+*/

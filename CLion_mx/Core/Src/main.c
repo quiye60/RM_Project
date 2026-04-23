@@ -122,7 +122,7 @@ int main(void)
 	
 
 U1_PtrInit();	
-	
+
 
 
 	
@@ -146,23 +146,27 @@ U1_PtrInit();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 
+	HAL_CAN_Start(&hcan);
+	CAN_Filter_AllPass_Init();
+	HAL_CAN_ActivateNotification(&hcan, CAN_IT_RX_FIFO0_MSG_PENDING);
 
 	LCD_Init();
 	LCD_Fill(0,0,128,160 ,YELLOW);
+
 	HAL_UART_Receive_DMA(&huart1,U1_RxBuff,256);
+	__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
+
+//Test_Display();
 
 
-Test_Display();
-
-uint32_t time =0;
 
 u1_printf("helloworld\n");
 
 
 
 
-
-
+uint32_t ttt =0 ;
+const uint8_t txtx[]="nihaoya!";
 
 
   /* USER CODE END 2 */
@@ -180,23 +184,16 @@ u1_printf("helloworld\n");
 
 
 
-u1_printf("helloworld%d\n",time++);
+u1_printf("time: %d\n",ttt++);
+
 	  
 	  u1_printf("$$$\n");
-	HAL_UART_Transmit(&huart1,U1_RxBuff,256,1000);
+	//HAL_UART_Transmit(&huart1,U1_RxBuff,256,1000);
 	  u1_printf("$$$\n");
-	  
-	  
-	  
-u2_printf("helloworld%d\n",time++);
-	  
-	  u2_printf("$$$\n");
-	HAL_UART_Transmit(&huart2,U1_RxBuff,256,1000);
-	  u2_printf("$$$\n");	  
-	  
-	  
-	  
-	  
+
+  	CAN_TxData(txtx,8);
+  //	CAN_RxData(U1_RxBuff);
+
 	  
 	  
 	  
