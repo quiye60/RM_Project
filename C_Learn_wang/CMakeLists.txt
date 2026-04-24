@@ -19,7 +19,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # Set the project name
-set(CMAKE_PROJECT_NAME clion_mx)
+set(CMAKE_PROJECT_NAME Robotic_Master_C_Board)
 
 # Enable compile command to ease indexing with e.g. clangd
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
@@ -66,35 +66,3 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 
     # Add user defined libraries
 )
-
-
-
-# 以下为非自动生成
-
-
-set(USER_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/MyCode)
-
-
-file(GLOB_RECURSE USER_LIB_SOURCES CONFIGURE_DEPENDS
-        ${USER_LIB_DIR}/*.c
-        ${USER_LIB_DIR}/*.cpp
-        ${USER_LIB_DIR}/*.s
-        ${USER_LIB_DIR}/*.S
-)
-
-
-target_sources(${PROJECT_NAME} PRIVATE ${USER_LIB_SOURCES})
-
-
-target_include_directories(${PROJECT_NAME} PRIVATE
-        ${USER_LIB_DIR}
-)
-
-
-
-
-
-
-
-
-

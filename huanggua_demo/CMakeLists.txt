@@ -19,7 +19,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # Set the project name
-set(CMAKE_PROJECT_NAME clion_mx)
+set(CMAKE_PROJECT_NAME A_board)
 
 # Enable compile command to ease indexing with e.g. clangd
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
@@ -69,6 +69,10 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 
 
 
+
+
+
+
 # 以下为非自动生成
 
 
@@ -83,12 +87,24 @@ file(GLOB_RECURSE USER_LIB_SOURCES CONFIGURE_DEPENDS
 )
 
 
-target_sources(${PROJECT_NAME} PRIVATE ${USER_LIB_SOURCES})
+target_sources(${PROJECT_NAME} PUBLIC ${USER_LIB_SOURCES})
 
 
-target_include_directories(${PROJECT_NAME} PRIVATE
+target_include_directories(${PROJECT_NAME} PUBLIC
+        ${USER_LIB_DIR}
+
+)
+
+target_include_directories(stm32cubemx INTERFACE
         ${USER_LIB_DIR}
 )
+
+
+
+
+
+
+
 
 
 
