@@ -167,41 +167,6 @@ int main(void)
 
 
 
-	  //
-  	// HAL_GPIO_WritePin(GPIOI, GPIO_PIN_0,  GPIO_PIN_SET);
-  	// HAL_GPIO_WritePin(GPIOH, GPIO_PIN_12, GPIO_PIN_SET);
-  	// HAL_GPIO_WritePin(GPIOH, GPIO_PIN_11, GPIO_PIN_SET);
-  	// HAL_GPIO_WritePin(GPIOH, GPIO_PIN_10, GPIO_PIN_SET);
-	  //
-  	// HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_SET);
-  	// HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET);
-  	// HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_SET);
-  	// HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_SET);
-	  //
-
-
-
-  	HAL_GPIO_TogglePin(GPIOI,GPIO_PIN_0);
-  	HAL_Delay(400);
-  	HAL_GPIO_TogglePin(GPIOH,GPIO_PIN_12);
-  	HAL_Delay(400);
-  	HAL_GPIO_TogglePin(GPIOH,GPIO_PIN_11);
-  	HAL_Delay(400);
-  	HAL_GPIO_TogglePin(GPIOH,GPIO_PIN_10);
-  	HAL_Delay(400);
-
-
-  	HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_15);
-  	HAL_Delay(400);
-  	HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_14);
-  	HAL_Delay(400);
-  	HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_13);
-  	HAL_Delay(400);
-  	HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_12);
-  	HAL_Delay(400);
-
-
-
 
 
 

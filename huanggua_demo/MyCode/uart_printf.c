@@ -1,11 +1,10 @@
 #include "main.h"
 #include <stdio.h>
-#include "stm32f1xx_hal.h"
 #include "string.h"
 #include "stdint.h"
 #include "stdarg.h"
 #include "stdio.h"
-#include "stm32f1xx_hal_uart.h"
+
 #include <string.h>
 
 

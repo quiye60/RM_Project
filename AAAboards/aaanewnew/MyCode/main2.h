@@ -1,0 +1,65 @@
+#ifndef MAIN2_H_
+#define MAIN2_H_
+
+
+
+#if 0		//c8t6 学习期间使用
+
+#include "stm32f1xx_hal.h"
+#include "stm32f1xx_hal_spi.h"
+#include "stm32f1xx_hal.h"
+#include "stm32f1xx_hal_uart.h"
+#include "stm32f1xx_hal_dma.h"
+#include "stm32f1xx_hal_uart.h"
+#include "stm32f1xx_hal.h"
+#include "spi.h"
+#endif
+
+
+#include "main.h"
+#include "usart.h"
+#include "gpio.h"
+#include  "can.h"
+
+#include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdarg.h>
+
+
+
+/*=====================================*/
+
+/*My_code start*/
+#include "can_user.h"
+#include "font.h"
+#include "PID.h"
+#include "ST7735.h"
+#include "uart_printf.h"	
+#include "test.h"
+
+/*My_code end*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#endif
+
+
+
+
+
+
+
+
