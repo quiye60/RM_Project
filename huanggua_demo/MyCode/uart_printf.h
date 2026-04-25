@@ -45,20 +45,17 @@ typedef struct{
 	uint32_t  RxCounter;
 	uint32_t  TxCounter;
 	uint32_t  TxState;
-
 	LCB       RxLocation[10];
 	LCB       TxLocation[10];
-
 	LCB      *RxInPtr;
 	LCB      *RxOutPtr;
 	LCB      *RxEndPtr;
-
 	LCB      *TxInPtr;
 	LCB      *TxOutPtr;
 	LCB      *TxEndPtr;
-	// UART_HandleTypeDef uart;
-	// DMA_HandleTypeDef dmatx;
-	// DMA_HandleTypeDef dmarx;
+	UART_HandleTypeDef uart;
+	DMA_HandleTypeDef dmatx;
+	DMA_HandleTypeDef dmarx;
 	
 }UCB;
 
@@ -92,6 +89,11 @@ void U3_PtrInit(void);
 
 
 // ==================== HAL回调函数 ====================
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart);
+void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart);
+void HAL_UART_AbortReceiveCpltCallback(UART_HandleTypeDef *huart);
+
 
 
 

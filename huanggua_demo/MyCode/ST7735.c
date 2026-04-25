@@ -19,7 +19,7 @@ void LCD_DMA_Tx(void)//RAM不够用
 void LCD_Tx(uint8_t Data)//用于发送指令
 {
 	
-//	HAL_SPI_Transmit(&hspi1,&Data,1,100);
+	HAL_SPI_Transmit(&hspi1,&Data,1,100);
 	
 
 }
@@ -28,7 +28,7 @@ void LCD_Tx(uint8_t Data)//用于发送指令
 void LCD_Txn(uint8_t *pData,uint16_t n)
 {
 	
-	//HAL_SPI_Transmit(&hspi1,pData,n,100);
+	HAL_SPI_Transmit(&hspi1,pData,n,100);
 	
 	
 }
@@ -402,7 +402,7 @@ void LCD_ShowChar(uint16_t x,
 					color_buf[1] = back_color & 0xFF;
 				}
 
-	//			HAL_SPI_Transmit(&hspi1, color_buf, 2, 10);
+				HAL_SPI_Transmit(&hspi1, color_buf, 2, 10);
 			}
 		}
 
