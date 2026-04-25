@@ -71,6 +71,22 @@ int main(void)
 
   /* USER CODE BEGIN 1 */
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -79,6 +95,14 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
+
+
+
+
+
+
+
+
 
   /* USER CODE END Init */
 
@@ -103,6 +127,29 @@ int main(void)
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -112,6 +159,66 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+
+
+
+
+
+
+
+	  //
+  	// HAL_GPIO_WritePin(GPIOI, GPIO_PIN_0,  GPIO_PIN_SET);
+  	// HAL_GPIO_WritePin(GPIOH, GPIO_PIN_12, GPIO_PIN_SET);
+  	// HAL_GPIO_WritePin(GPIOH, GPIO_PIN_11, GPIO_PIN_SET);
+  	// HAL_GPIO_WritePin(GPIOH, GPIO_PIN_10, GPIO_PIN_SET);
+	  //
+  	// HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_SET);
+  	// HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET);
+  	// HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_SET);
+  	// HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_SET);
+	  //
+
+
+
+  	HAL_GPIO_TogglePin(GPIOI,GPIO_PIN_0);
+  	HAL_Delay(400);
+  	HAL_GPIO_TogglePin(GPIOH,GPIO_PIN_12);
+  	HAL_Delay(400);
+  	HAL_GPIO_TogglePin(GPIOH,GPIO_PIN_11);
+  	HAL_Delay(400);
+  	HAL_GPIO_TogglePin(GPIOH,GPIO_PIN_10);
+  	HAL_Delay(400);
+
+
+  	HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_15);
+  	HAL_Delay(400);
+  	HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_14);
+  	HAL_Delay(400);
+  	HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_13);
+  	HAL_Delay(400);
+  	HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_12);
+  	HAL_Delay(400);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   }
   /* USER CODE END 3 */
 }
