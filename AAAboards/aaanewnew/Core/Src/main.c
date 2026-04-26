@@ -28,6 +28,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+
+#include "main2.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -197,12 +199,7 @@ uint8_t tt=0;
 										*(int8_t*)(Rdata+6));
 
 
-
-	  
-	  
-	  
-	  
-	  
+  
 	  
 	  
 	  

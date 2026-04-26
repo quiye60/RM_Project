@@ -52,9 +52,7 @@ void CAN_TxData(const uint8_t *Tdata, const uint8_t len){//测试
 	can1_tx1.DLC = len;
 	uint8_t res = HAL_CAN_AddTxMessage(&hcan1,&can1_tx1,Tdata,&pTxMailbox_Num);
 
-
-	u6_printf("res = %d pTxMailbox_Num = %d\r\n",res,pTxMailbox_Num);
-	u6_printf("sent end \n\n");
+	
 }
 
 

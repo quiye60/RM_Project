@@ -66,3 +66,51 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 
     # Add user defined libraries
 )
+
+
+
+
+
+# 以下为非自动生成
+
+
+set(USER_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/MyCode)
+
+
+file(GLOB_RECURSE USER_LIB_SOURCES CONFIGURE_DEPENDS
+        ${USER_LIB_DIR}/*.c
+        ${USER_LIB_DIR}/*.cpp
+        ${USER_LIB_DIR}/*.s
+        ${USER_LIB_DIR}/*.S
+)
+
+
+target_sources(${PROJECT_NAME} PUBLIC ${USER_LIB_SOURCES})
+
+
+target_include_directories(${PROJECT_NAME} PUBLIC
+        ${USER_LIB_DIR}
+
+)
+
+target_include_directories(stm32cubemx INTERFACE
+        ${USER_LIB_DIR}
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
