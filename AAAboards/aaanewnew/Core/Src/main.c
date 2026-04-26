@@ -54,17 +54,22 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
+
+
+
 int fputc(int c, FILE *stream)
 {
     HAL_UART_Transmit(&huart6, (uint8_t *)&c, 1, 0xFFFF);
     return c;
 }
+
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 extern uint8_t Rdata[8];
-
+extern uint16_t RxID;
 
 
 
@@ -141,25 +146,22 @@ u6_printf("fifo: %d\n",HAL_CAN_ActivateNotification(&hcan1,
 
 
 
-	int16_t current6020[4]={0,0,0,6000};
-	int16_t voltage6020[4]={0,0,0,4000};
+	int16_t current6020[4]={0x6666,0x6666,0,0};
+	int16_t voltage6020[4]={0,0,0,8000};
 
 
 
 
 
 
+		
 
 
 
 
+uint8_t tt=0;
 
 
-
-
-
-
-uint32_t tt=0;
 
 
   /* USER CODE END 2 */
@@ -173,32 +175,26 @@ uint32_t tt=0;
     /* USER CODE BEGIN 3 */
 	  
 	  
+	
 	  
 	  
 	  
-	  HAL_GPIO_TogglePin(GPIOF,GPIO_PIN_14);
-	  u6_printf("time %d:\n",tt++);
+	  if(!tt++)HAL_GPIO_TogglePin(GPIOF,GPIO_PIN_14);
+
 	 
 
 	  
 
 
-//	CAN_GM6020_Current(current6020);
 	CAN_GM6020_voltage(voltage6020);
-/*
-	int16_t M11 = (int16_t)((Rdata[0] << 8) | Rdata[1]);
-    int16_t M22 = (int16_t)((Rdata[2] << 8) | Rdata[3]);
-    int16_t M33 = (int16_t)((Rdata[4] << 8) | Rdata[5]);
-    int16_t M44 = (int16_t)((Rdata[6] << 8) | Rdata[7]);
-
-    u6_printf("RX M1=%d M2=%d M3=%d M4=%d\r\n", M11, M22, M33, M44);
-	  
-	*/
 
 
-
-	HAL_Delay(3000);
-
+	HAL_Delay(1);
+	u6_printf("id : %X \n",RxID);
+	u6_printf("data: %d %d %d %d\n",	*(int16_t*)(Rdata+0),
+										*(int16_t*)(Rdata+2),
+										*(int16_t*)(Rdata+4),
+										*(int8_t*)(Rdata+6));
 
 
 

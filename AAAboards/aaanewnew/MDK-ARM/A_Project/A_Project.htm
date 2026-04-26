@@ -3,7 +3,7 @@
 <title>Static Call Graph - [A_Project\A_Project.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image A_Project\A_Project.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Sun Apr 26 00:15:13 2026
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Sun Apr 26 16:29:18 2026
 <BR><P>
 <H3>Maximum Stack Usage =        408 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -582,16 +582,15 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[93]"></a>CAN_GM6020_voltage</STRONG> (Thumb, 136 bytes, Stack size 24 bytes, can_user.o(i.CAN_GM6020_voltage))
-<BR><BR>[Stack]<UL><LI>Max Depth = 368<LI>Call Chain = CAN_GM6020_voltage &rArr; u6_printf &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
+<P><STRONG><a name="[93]"></a>CAN_GM6020_voltage</STRONG> (Thumb, 94 bytes, Stack size 40 bytes, can_user.o(i.CAN_GM6020_voltage))
+<BR><BR>[Stack]<UL><LI>Max Depth = 60<LI>Call Chain = CAN_GM6020_voltage &rArr; HAL_CAN_AddTxMessage
 </UL>
-<BR>[Calls]<UL><LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u6_printf
-<LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_AddTxMessage
+<BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_AddTxMessage
 </UL>
 <BR>[Called By]<UL><LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[95]"></a>CAN_RxData</STRONG> (Thumb, 20 bytes, Stack size 8 bytes, can_user.o(i.CAN_RxData))
+<P><STRONG><a name="[95]"></a>CAN_RxData</STRONG> (Thumb, 26 bytes, Stack size 8 bytes, can_user.o(i.CAN_RxData))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = CAN_RxData &rArr; HAL_CAN_GetRxMessage
 </UL>
 <BR>[Calls]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_GetRxMessage
@@ -2181,7 +2180,7 @@ Global Symbols
 
 <P><STRONG><a name="[182]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 
-<P><STRONG><a name="[62]"></a>main</STRONG> (Thumb, 138 bytes, Stack size 16 bytes, main.o(i.main))
+<P><STRONG><a name="[62]"></a>main</STRONG> (Thumb, 172 bytes, Stack size 16 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 408<LI>Call Chain = main &rArr; CAN_Filter_FIFO0_AllPass_Init &rArr; u6_printf &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;u6_printf
@@ -2212,8 +2211,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[125]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Transmit
 <LI><a href="#[16d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vsprintf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_GM6020_voltage
-<LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Filter_FIFO0_AllPass_Init
+<BR>[Called By]<UL><LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Filter_FIFO0_AllPass_Init
 <LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 <P>
