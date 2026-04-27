@@ -29,6 +29,8 @@
 /* USER CODE BEGIN Includes */
 
 
+#include <tgmath.h>
+
 #include "main2.h"
 /* USER CODE END Includes */
 
@@ -128,40 +130,43 @@ int main(void)
   MX_TIM12_Init();
   MX_UART8_Init();
   MX_USB_DEVICE_Init();
+  MX_TIM13_Init();
   /* USER CODE BEGIN 2 */
 
 
+extern 	PID_t pid_6020_speed;
+extern	PID_t pid_6020_location;
+	PID_Update(&pid_6020_speed,0);
+	PID_Update(&pid_6020_location,0);
 
 
 
-CAN_Filter_FIFO0_AllPass_Init();
-
-u6_printf("start: %d\n",HAL_CAN_Start(&hcan1));
+	CAN_Filter_FIFO0_AllPass_Init();
 
 
 
-
-
-u6_printf("fifo: %d\n",HAL_CAN_ActivateNotification(&hcan1,
-                             CAN_IT_RX_FIFO0_MSG_PENDING));
-
-
-
-
-	int16_t current6020[4]={0x6666,0x6666,0,0};
-	int16_t voltage6020[4]={0,0,0,8000};
+	int16_t current6020[4]={0x1166,0x6666,0,0};
+	int16_t voltage6020[4]={8000,8000,8000,8000};
 
 
 
 
 
 
-		
+	uint16_t ang =0;
+	int16_t speed=0;
+	int16_t current=0;
 
 
 
+	uint8_t tt=0;
 
-uint8_t tt=0;
+
+
+	u6_printf("clear\n");
+
+
+
 
 
 
@@ -170,6 +175,8 @@ uint8_t tt=0;
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
+  // ReSharper disable once CppDFAEndlessLoop
   while (1)
   {
     /* USER CODE END WHILE */
@@ -177,32 +184,28 @@ uint8_t tt=0;
     /* USER CODE BEGIN 3 */
 	  
 	  
-	
+  	 ang =(uint16_t)((Rdata)[0] << 8 | (Rdata)[1]);
+  	 speed=(int16_t)((Rdata)[2] << 8 | (Rdata)[3]);
+  	 current=(int16_t)((Rdata)[4] << 8 | (Rdata)[5]);
+	  u6_printf("ang: %d, speed: %d , current: %d \n",ang,speed,current);
 	  
-	  
-	  
+
 	  if(!tt++)HAL_GPIO_TogglePin(GPIOF,GPIO_PIN_14);
 
-	 
 
 	  
 
-
+  	//CAN_GM6020_Current(current6020);
 	CAN_GM6020_voltage(voltage6020);
 
 
-	HAL_Delay(1);
-	u6_printf("id : %X \n",RxID);
-	u6_printf("data: %d %d %d %d\n",	*(int16_t*)(Rdata+0),
-										*(int16_t*)(Rdata+2),
-										*(int16_t*)(Rdata+4),
-										*(int8_t*)(Rdata+6));
+	HAL_Delay(5);
 
 
-  
+
 	  
 	  
-	  
+
   }
   /* USER CODE END 3 */
 }
@@ -287,6 +290,8 @@ void Error_Handler(void)
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
   __disable_irq();
+
+  // ReSharper disable once CppDFAEndlessLoop
   while (1)
   {
   }

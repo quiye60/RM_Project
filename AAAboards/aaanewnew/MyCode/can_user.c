@@ -33,23 +33,12 @@ void CAN_Filter_FIFO0_AllPass_Init(void)
     // F4双CAN必须写（即使只用CAN1）
     filter.SlaveStartFilterBank = 14;
 
-u6_printf("config_fliter%d\n",    HAL_CAN_ConfigFilter(&hcan1, &filter));
-}
-
-void CAN_TxData(const uint8_t *Tdata, const uint8_t len){//测试
-	
-	uint32_t pTxMailbox_Num;
+	u6_printf("config_fliter%d\n",	HAL_CAN_ConfigFilter(&hcan1, &filter));
+	u6_printf("start: %d\n",		HAL_CAN_Start(&hcan1));
+	u6_printf("fifo: %d\n",			HAL_CAN_ActivateNotification(&hcan1,
+														 CAN_IT_RX_FIFO0_MSG_PENDING));
 
 
-	can1_tx1.StdId = 0x123;
-	can1_tx1.IDE = CAN_ID_STD;
-	can1_tx1.RTR = CAN_RTR_DATA;
-	can1_tx1.DLC = len;
-	uint8_t res = HAL_CAN_AddTxMessage(&hcan1,&can1_tx1,(uint8_t*)Tdata,&pTxMailbox_Num);
-
-
-	u6_printf("res1 = %d \n",res);
-	u6_printf("sent end \n\n");
 }
 
 
@@ -58,7 +47,6 @@ void CAN_TxData(const uint8_t *Tdata, const uint8_t len){//测试
 void CAN_GM6020_Current(const int16_t*	I1234_below_16384 ){//测试
 
 	uint32_t pTxMailbox_Num;
-	
 		
 	uint8_t CAN_TxData[8];
 	CAN_TxData[0] = (uint8_t)(I1234_below_16384[0] >> 8);
@@ -72,47 +60,24 @@ void CAN_GM6020_Current(const int16_t*	I1234_below_16384 ){//测试
 
 	CAN_TxData[6] = (uint8_t)(I1234_below_16384[3] >> 8);
 	CAN_TxData[7] = (uint8_t)(I1234_below_16384[3]);
-		
-		
-	
+
 	can1_tx2.StdId = 0X1FE;//1234电机
 	can1_tx2.IDE = CAN_ID_STD;
 	can1_tx2.RTR = CAN_RTR_DATA;
 	can1_tx2.DLC = 8;
-	uint8_t res = HAL_CAN_AddTxMessage(&hcan1,&can1_tx2,CAN_TxData,&pTxMailbox_Num);
-	
-	
-	int16_t M1 = (int16_t)((CAN_TxData[0] << 8) | CAN_TxData[1]);
-    int16_t M2 = (int16_t)((CAN_TxData[2] << 8) | CAN_TxData[3]);
-    int16_t M3 = (int16_t)((CAN_TxData[4] << 8) | CAN_TxData[5]);
-    int16_t M4 = (int16_t)((CAN_TxData[6] << 8) | CAN_TxData[7]);
+	HAL_CAN_AddTxMessage(&hcan1,&can1_tx2,CAN_TxData,&pTxMailbox_Num);
 
-    u6_printf("M1=%d M2=%d M3=%d M4=%d\r\n", M1, M2, M3, M4);
-	
-	
-	
-	
-	
-	
-	u6_printf("6020_sent end \n\n");
-	
-	
-	
 	}
 
 
-	
 static uint8_t CAN_voltage14[8];
 
 void CAN_GM6020_voltage(const int16_t*	V1234below_25000 ){//测试
 
-	   CAN_TxHeaderTypeDef tx_header;
+	CAN_TxHeaderTypeDef tx_header;
     uint32_t used_mailbox;
 
-	HAL_CAN_AddTxMessage(&hcan1, &tx_header, CAN_voltage14, &used_mailbox);
-	
-
-    tx_header.StdId = 0x1FF;
+	tx_header.StdId = 0x1FF;
     tx_header.ExtId = 0;
     tx_header.IDE = CAN_ID_STD;
     tx_header.RTR = CAN_RTR_DATA;
@@ -130,10 +95,6 @@ void CAN_GM6020_voltage(const int16_t*	V1234below_25000 ){//测试
 	
 	}
 
-
-
-
-
 HAL_StatusTypeDef res = HAL_ERROR;
 uint8_t CAN_RxData(uint8_t *Rdata){
 
@@ -148,17 +109,17 @@ uint8_t CAN_RxData(uint8_t *Rdata){
 
 }
 
-
-
-
-
-
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef  *hcan_){
 
     
 	if(hcan_->Instance == CAN1){
 
 		CAN_RxData(Rdata);
+
+
+
+
+
 		
 
 

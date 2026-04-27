@@ -26,6 +26,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+#include <math.h>
 
 
 
@@ -43,9 +44,18 @@
 
 
 
+//extern
+
+extern 	uint16_t ang ;
+extern int16_t speed;
+extern int16_t current;
+
+extern PID_t pid_6020_speed;
+extern PID_t pid_6020_location;
 
 
 
+;
 
 
 
