@@ -49,11 +49,13 @@
 extern 	uint16_t ang ;
 extern int16_t speed;
 extern int16_t current;
+extern uint8_t update;
 
 extern PID_t pid_6020_speed;
 extern PID_t pid_6020_location;
 
-
+extern int16_t current6020[4];
+extern int16_t voltage6020[4];
 
 ;
 

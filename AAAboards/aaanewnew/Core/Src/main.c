@@ -28,7 +28,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
-
 #include <tgmath.h>
 
 #include "main2.h"
@@ -36,7 +35,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+void TIM8_UP_TIM13_IRQHandler(void);
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -74,8 +73,8 @@ int fputc(int c, FILE *stream)
 /* USER CODE BEGIN 0 */
 extern uint8_t Rdata[8];
 extern uint16_t RxID;
-
-
+int16_t current6020[4]={0x1166,0x6666,0,0};
+int16_t voltage6020[4]={8000,8000,8000,8000};
 
 
 
@@ -110,6 +109,13 @@ int main(void)
 
   /* USER CODE BEGIN Init */
 
+
+
+
+
+
+
+
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -133,7 +139,8 @@ int main(void)
   MX_TIM13_Init();
   /* USER CODE BEGIN 2 */
 
-
+	HAL_TIM_Base_Start_IT(&htim13);
+	HAL_NVIC_EnableIRQ(TIM8_UP_TIM13_IRQn);
 extern 	PID_t pid_6020_speed;
 extern	PID_t pid_6020_location;
 	PID_Update(&pid_6020_speed,0);
@@ -145,17 +152,13 @@ extern	PID_t pid_6020_location;
 
 
 
-	int16_t current6020[4]={0x1166,0x6666,0,0};
-	int16_t voltage6020[4]={8000,8000,8000,8000};
 
 
 
 
 
 
-	uint16_t ang =0;
-	int16_t speed=0;
-	int16_t current=0;
+
 
 
 
@@ -187,7 +190,7 @@ extern	PID_t pid_6020_location;
   	 ang =(uint16_t)((Rdata)[0] << 8 | (Rdata)[1]);
   	 speed=(int16_t)((Rdata)[2] << 8 | (Rdata)[3]);
   	 current=(int16_t)((Rdata)[4] << 8 | (Rdata)[5]);
-	  u6_printf("ang: %d, speed: %d , current: %d \n",ang,speed,current);
+	//  u6_printf("ang: %d, speed: %d , current: %d \n",ang,speed,current);
 	  
 
 	  if(!tt++)HAL_GPIO_TogglePin(GPIOF,GPIO_PIN_14);
@@ -203,7 +206,6 @@ extern	PID_t pid_6020_location;
 
 
 
-	  
 	  
 
   }
