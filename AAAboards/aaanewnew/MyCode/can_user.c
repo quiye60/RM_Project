@@ -115,7 +115,9 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef  *hcan_){
 	if(hcan_->Instance == CAN1){
 
 		CAN_RxData(Rdata);
-
+		ang =(uint16_t)((Rdata)[0] << 8 | (Rdata)[1]);
+		speed=(int16_t)((Rdata)[2] << 8 | (Rdata)[3]);
+		current=(int16_t)((Rdata)[4] << 8 | (Rdata)[5]);
 
 
 

@@ -73,7 +73,10 @@ int fputc(int c, FILE *stream)
 /* USER CODE BEGIN 0 */
 extern uint8_t Rdata[8];
 extern uint16_t RxID;
-int16_t current6020[4]={0x1166,0x6666,0,0};
+
+extern 	PID_t pid_6020_speed;
+extern	PID_t pid_6020_location;
+int16_t current6020[4]={8000,8000,8000,8000};
 int16_t voltage6020[4]={8000,8000,8000,8000};
 
 
@@ -112,6 +115,17 @@ int main(void)
 
 
 
+	PID_Init(&pid_6020_speed);
+	PID_Init(&pid_6020_location);
+
+	pid_6020_speed.Target=10000;
+	pid_6020_speed.Kp=1.2;
+	pid_6020_speed.Ki=120;
+	pid_6020_speed.Kd=1;
+	pid_6020_speed.IntSep=30000000;
+	pid_6020_speed.IntMax=10000000;
+
+
 
 
 
@@ -141,8 +155,7 @@ int main(void)
 
 	HAL_TIM_Base_Start_IT(&htim13);
 	HAL_NVIC_EnableIRQ(TIM8_UP_TIM13_IRQn);
-extern 	PID_t pid_6020_speed;
-extern	PID_t pid_6020_location;
+
 	PID_Update(&pid_6020_speed,0);
 	PID_Update(&pid_6020_location,0);
 
@@ -163,10 +176,15 @@ extern	PID_t pid_6020_location;
 
 
 	uint8_t tt=0;
-
-
-
-	u6_printf("clear\n");
+	//u6_printf("clear\n");
+//
+// uint16_t a=500;
+// while(a--) {
+//
+//
+// 	// CAN_GM6020_voltage(current6020);
+// 	HAL_Delay(3);
+// }
 
 
 
@@ -187,11 +205,7 @@ extern	PID_t pid_6020_location;
     /* USER CODE BEGIN 3 */
 	  
 	  
-  	 ang =(uint16_t)((Rdata)[0] << 8 | (Rdata)[1]);
-  	 speed=(int16_t)((Rdata)[2] << 8 | (Rdata)[3]);
-  	 current=(int16_t)((Rdata)[4] << 8 | (Rdata)[5]);
-	//  u6_printf("ang: %d, speed: %d , current: %d \n",ang,speed,current);
-	  
+
 
 	  if(!tt++)HAL_GPIO_TogglePin(GPIOF,GPIO_PIN_14);
 
@@ -199,10 +213,17 @@ extern	PID_t pid_6020_location;
 	  
 
   	//CAN_GM6020_Current(current6020);
-	CAN_GM6020_voltage(voltage6020);
+	if (update) {
+		u6_printf("ang: %d, speed: %d , current: %d \n",ang,speed,current);
+		u6_printf("volout:%d\n",voltage6020[0]);
 
 
-	HAL_Delay(5);
+
+		CAN_GM6020_voltage(voltage6020);
+		//CAN_GM6020_voltage(current6020);
+		update=0;
+	}
+	HAL_Delay(1);
 
 
 

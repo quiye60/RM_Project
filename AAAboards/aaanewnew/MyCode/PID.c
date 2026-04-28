@@ -18,7 +18,7 @@ void PID_Update(PID_t *hpid,float actual)
 {
 
 	
-	
+	hpid->Actual=actual;
 	/*获取本次误差和上次误差*/
 	hpid->Error1 = hpid->Error0;					//获取上次误差
 	hpid->Error0 = hpid->Target - hpid->Actual;		//获取本次误差
@@ -27,10 +27,10 @@ void PID_Update(PID_t *hpid,float actual)
 	fabs(hpid->Error0)<hpid->DeadZone)
 		{hpid->Actual_front=hpid->Actual;return;}		//死区代码
 
-	if (hpid->Ki != 0	&&	fabs(hpid->ErrorInt)<hpid->IntSep)					//如果Ki不为0且积分未分离
+	if (hpid->Ki != 0	&&	fabs(hpid->Error0)>pid_6020_speed.IntSep)					//如果Ki不为0且积分未分离
 	{
 		hpid->ErrorInt += hpid->Error0;	//进行误差积分
-		if (hpid->ErrorInt > hpid->IntMax) {hpid->ErrorInt = hpid->IntMax;}		
+		if (hpid->ErrorInt > hpid->IntMax) {hpid->ErrorInt = hpid->IntMax;}
 		if (hpid->ErrorInt <-hpid->IntMax) {hpid->ErrorInt =-hpid->IntMax;}		//积分限幅
 		
 	}
@@ -51,14 +51,15 @@ void PID_Update(PID_t *hpid,float actual)
 	
 	}else				//微分不先行			//给误差阻尼
 	{
-		hpid->Out = hpid->Kp * hpid->Error0
+		hpid->Out =
+					hpid->Kp * hpid->Error0
 					+ hpid->Ki * hpid->ErrorInt
 					+ (1-hpid->DifFilter)	* (hpid->Kd * (hpid->Error0 - hpid->Error1))
 					+ hpid->DifFilter		* hpid->Error1;
 	}	
 
-	if (hpid->Out > hpid->OutMax) {hpid->Out = hpid->OutMax;}	
-	if (hpid->Out < hpid->OutMin) {hpid->Out = hpid->OutMin;}	//输出限幅
+//	if (hpid->Out > hpid->OutMax) {hpid->Out = hpid->OutMax;}
+//	if (hpid->Out < hpid->OutMin) {hpid->Out = hpid->OutMin;}	//输出限幅
 
 
 

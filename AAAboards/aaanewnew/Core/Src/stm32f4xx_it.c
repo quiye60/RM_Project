@@ -60,7 +60,6 @@ int16_t current=0;
 
 uint8_t update=0;
 
-//  uint8_t a;
 
 
 
@@ -302,14 +301,18 @@ void TIM8_UP_TIM13_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM8_UP_TIM13_IRQn 0 */
 
-	PID_Update(&pid_6020_location,ang);
+
+
+	// PID_Update(&pid_6020_location,ang);
+	// pid_6020_speed.Target=pid_6020_location.Out;
+
 	PID_Update(&pid_6020_speed,speed);
 
+
+
+	voltage6020[0]= (int16_t)pid_6020_speed.Out;
+
 	update=1;
-	pid_6020_speed.Target=pid_6020_location.Actual;
-	voltage6020[0]=pid_6020_speed.Actual;
-
-
 
 
 
