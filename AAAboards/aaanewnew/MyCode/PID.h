@@ -37,7 +37,7 @@ typedef struct {
 
 
 void PID_Init(PID_t *PID);
-
+void PID_Update_arg(PID_t *hpid,float actual);
 
 
 
@@ -52,5 +52,5 @@ void PID_Init(PID_t *PID);
 
 
 void PID_Update(PID_t *hpid,float actual);
-
+void PID_pure(PID_t *hpid,float actual);
 #endif

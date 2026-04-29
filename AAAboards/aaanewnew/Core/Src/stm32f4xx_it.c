@@ -302,15 +302,16 @@ void TIM8_UP_TIM13_IRQHandler(void)
   /* USER CODE BEGIN TIM8_UP_TIM13_IRQn 0 */
 
 
+	PID_pure(&pid_6020_location,ang);
+	// PID_Update_arg(&pid_6020_location,ang);
+	//pid_6020_speed.Target=pid_6020_location.Out;
 
-	// PID_Update(&pid_6020_location,ang);
-	// pid_6020_speed.Target=pid_6020_location.Out;
 
 	PID_Update(&pid_6020_speed,speed);
 
 
 
-	voltage6020[0]= (int16_t)pid_6020_speed.Out;
+	voltage6020[0]= (int16_t)(pid_6020_speed.Out);
 
 	update=1;
 

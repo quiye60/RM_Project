@@ -76,8 +76,8 @@ extern uint16_t RxID;
 
 extern 	PID_t pid_6020_speed;
 extern	PID_t pid_6020_location;
-int16_t current6020[4]={8000,8000,8000,8000};
-int16_t voltage6020[4]={8000,8000,8000,8000};
+int16_t current6020[4]={0,0,0,0};
+int16_t voltage6020[4]={0,0,0,0};
 
 
 
@@ -118,13 +118,30 @@ int main(void)
 	PID_Init(&pid_6020_speed);
 	PID_Init(&pid_6020_location);
 
-	pid_6020_speed.Target=10000;
-	pid_6020_speed.Kp=1.2;
-	pid_6020_speed.Ki=120;
-	pid_6020_speed.Kd=1;
-	pid_6020_speed.IntSep=30000000;
-	pid_6020_speed.IntMax=10000000;
+	pid_6020_speed.Target=200;
+	pid_6020_speed.Kp=75;
+	pid_6020_speed.Ki=1.9;
+	pid_6020_speed.Kd=10;
+	pid_6020_speed.IntSep=15;
+	pid_6020_speed.IntMax=40000;
+	pid_6020_speed.OutMax=25000;
+	pid_6020_speed.OutMin=-25000;
+	pid_6020_speed.DeadZone=4;
+	pid_6020_speed.DifFilter=0.5;
+	pid_6020_speed.DifFront=1;
 
+
+	pid_6020_location.Target=4096;
+	pid_6020_location.Kp=0.5;
+	pid_6020_location.Ki=0.005;
+	pid_6020_location.Kd=0.1;
+	pid_6020_location.IntSep=20;
+	pid_6020_location.IntMax=20000;
+	pid_6020_location.OutMax=200;
+	pid_6020_location.OutMin=-200;
+	pid_6020_location.DeadZone=10;
+	pid_6020_location.DifFilter=0;
+	pid_6020_location.DifFront=1;
 
 
 
@@ -156,9 +173,6 @@ int main(void)
 	HAL_TIM_Base_Start_IT(&htim13);
 	HAL_NVIC_EnableIRQ(TIM8_UP_TIM13_IRQn);
 
-	PID_Update(&pid_6020_speed,0);
-	PID_Update(&pid_6020_location,0);
-
 
 
 	CAN_Filter_FIFO0_AllPass_Init();
@@ -177,14 +191,7 @@ int main(void)
 
 	uint8_t tt=0;
 	//u6_printf("clear\n");
-//
-// uint16_t a=500;
-// while(a--) {
-//
-//
-// 	// CAN_GM6020_voltage(current6020);
-// 	HAL_Delay(3);
-// }
+
 
 
 
@@ -214,8 +221,22 @@ int main(void)
 
   	//CAN_GM6020_Current(current6020);
 	if (update) {
-		u6_printf("ang: %d, speed: %d , current: %d \n",ang,speed,current);
-		u6_printf("volout:%d\n",voltage6020[0]);
+		int tar=pid_6020_location.Target;
+		int up=tar+50;
+		int low=tar-50;
+		int out =pid_6020_speed.Out/100;
+		u6_printf(
+"ang:%d,\
+speed:%d ,\
+target:%d ,\
++:%d,\
+%d \n"
+							,ang
+							,speed
+							,tar
+							,up
+							,low);
+
 
 
 

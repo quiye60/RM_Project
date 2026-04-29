@@ -24,8 +24,11 @@ void PID_Update(PID_t *hpid,float actual)
 	hpid->Error0 = hpid->Target - hpid->Actual;		//获取本次误差
 	
 	if(hpid->DeadZone&&
-	fabs(hpid->Error0)<hpid->DeadZone)
-		{hpid->Actual_front=hpid->Actual;return;}		//死区代码
+	fabs(hpid->Error0)<hpid->DeadZone) {
+		hpid->Actual_front=hpid->Actual;
+	//	hpid->ErrorInt*=0.999;
+		return;
+	}		//死区代码
 
 	if (hpid->Ki != 0	&&	fabs(hpid->Error0)>pid_6020_speed.IntSep)					//如果Ki不为0且积分未分离
 	{
@@ -34,9 +37,10 @@ void PID_Update(PID_t *hpid,float actual)
 		if (hpid->ErrorInt <-hpid->IntMax) {hpid->ErrorInt =-hpid->IntMax;}		//积分限幅
 		
 	}
-	else								//否则积分项清零
+	else								//k=0或误差较小,清零
 	{
-		hpid->ErrorInt = 0;			
+	//		hpid->ErrorInt *=0.9999 ;
+
 	}
 
 	
@@ -58,8 +62,119 @@ void PID_Update(PID_t *hpid,float actual)
 					+ hpid->DifFilter		* hpid->Error1;
 	}	
 
-//	if (hpid->Out > hpid->OutMax) {hpid->Out = hpid->OutMax;}
-//	if (hpid->Out < hpid->OutMin) {hpid->Out = hpid->OutMin;}	//输出限幅
+	if (hpid->Out > hpid->OutMax) {hpid->Out = hpid->OutMax;}
+	if (hpid->Out < hpid->OutMin) {hpid->Out = hpid->OutMin;}	//输出限幅
+
+
+
+
+	hpid->Actual_front=hpid->Actual;
+}
+
+
+void PID_Update_arg(PID_t *hpid,float actual)
+{
+
+
+	hpid->Actual=actual;
+	/*获取本次误差和上次误差*/
+	hpid->Error1 = hpid->Error0;
+	//获取上次误差
+	float err= hpid->Target - hpid->Actual;		//获取本次误差
+	if ( err >0) {
+
+		if (err < 4096.f){hpid->Error0=err;}else{hpid->Error0=-8191.f+err;}
+
+
+	}else
+	{
+		if (fabs(err) < 4096.f){hpid->Error0=err;}else{hpid->Error0=8191.f+err;}
+
+	}
+
+
+
+
+
+
+
+
+	if (hpid->Ki != 0	&&	fabs(hpid->Error0)>pid_6020_location.IntSep)					//如果Ki不为0且积分未分离
+	{
+		hpid->ErrorInt += hpid->Error0;	//进行误差积分
+		if (hpid->ErrorInt > hpid->IntMax) {hpid->ErrorInt = hpid->IntMax;}
+		if (hpid->ErrorInt <-hpid->IntMax) {hpid->ErrorInt =-hpid->IntMax;}		//积分限幅
+
+	}
+
+	else								//k=0或误差较小,清零
+	{
+
+	hpid->ErrorInt=0;
+
+
+
+	}
+
+
+	if(hpid->DifFront)	//微分先行			//给实际值阻尼
+	{
+
+		hpid->Out = hpid->Kp   * hpid->Error0
+					+ hpid->Ki * hpid->ErrorInt
+					+ (1-hpid->DifFilter)	*(hpid->Kd * (hpid->Actual - hpid->Actual_front))
+					+ hpid->DifFilter		* hpid->Actual_front;
+
+
+	}else				//微分不先行			//给误差阻尼
+	{
+		hpid->Out =
+					hpid->Kp * hpid->Error0
+					+ hpid->Ki * hpid->ErrorInt
+					+ (1-hpid->DifFilter)	* (hpid->Kd * (hpid->Error0 - hpid->Error1))
+					+ hpid->DifFilter		* hpid->Error1;
+	}
+
+	if (hpid->Out > hpid->OutMax) {hpid->Out = hpid->OutMax;}
+	if (hpid->Out < hpid->OutMin) {hpid->Out = hpid->OutMin;}	//输出限幅
+
+
+
+	if (fabs(hpid->Error0)<pid_6020_location.IntSep) {
+		if (speed>0) {
+			if (hpid->Error0>0) {//同方向缓速
+
+				hpid->Out*=0.99;
+			}else {
+
+				hpid->Out=-fabs(0.99*speed);
+			}
+
+		}else//speed<0
+		{
+			if (hpid->Out<0) {
+
+				hpid->Out*=0.99;
+			}else {
+
+				hpid->Out=fabs(0.99*speed);
+
+			}
+
+		}
+	}
+
+	if(hpid->DeadZone&&
+	fabs(hpid->Error0)<hpid->DeadZone)
+	{
+		hpid->Actual_front=hpid->Actual;
+
+		hpid->Out =0;
+		hpid->ErrorInt=0;
+		return;
+
+	}		//死区代码
+
 
 
 
@@ -98,4 +213,119 @@ void PID_Init(PID_t *PID) {
 	
 	
 	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void PID_pure(PID_t *hpid,float actual)
+{
+
+
+	hpid->Actual=actual;
+	/*获取本次误差和上次误差*/
+	hpid->Error1 = hpid->Error0;
+	//获取上次误差
+	float err= hpid->Target - hpid->Actual;		//获取本次误差
+	if ( err >0) {
+
+		if (err < 4096.5f){hpid->Error0=err;}else{hpid->Error0=-8191.5f+err;}
+
+
+	}else
+	{
+		if (fabs(err) < 4096.5f){hpid->Error0=err;}else{hpid->Error0=8191.5f+err;}
+
+	}
+
+
+/*============================================*///数据记录
+
+
+
+		hpid->ErrorInt += hpid->Error0;	//进行误差积分
+		if (hpid->ErrorInt > hpid->IntMax) {hpid->ErrorInt = hpid->IntMax;}
+		if (hpid->ErrorInt <-hpid->IntMax) {hpid->ErrorInt =-hpid->IntMax;}		//积分限幅
+
+
+
+		hpid->Out = hpid->Kp   * hpid->Error0
+					+ hpid->Ki * hpid->ErrorInt
+					+ (1-hpid->DifFilter)	*(hpid->Kd * (hpid->Actual - hpid->Actual_front))
+					+ hpid->DifFilter		* hpid->Actual_front;
+
+
+
+
+
+	// if (fabs(hpid->Error0)<pid_6020_location.IntSep) {
+	// 	if (speed>0) {
+	// 		if (hpid->Error0>0) {//同方向缓速
+	//
+	// 			hpid->Out*=0.99;
+	// 		}else {
+	//
+	// 			hpid->Out=-fabs(0.99*speed);
+	// 		}
+	//
+	// 	}else//speed<0
+	// 	{
+	// 		if (hpid->Out<0) {
+	//
+	// 			hpid->Out*=0.99;
+	// 		}else {
+	//
+	// 			hpid->Out=fabs(0.99*speed);
+	//
+	// 		}
+	//
+	// 	}
+	// }
+
+
+
+	if (hpid->Out > hpid->OutMax) {hpid->Out = hpid->OutMax;}
+	if (hpid->Out < hpid->OutMin) {hpid->Out = hpid->OutMin;}	//输出限幅
+
+
+	hpid->Actual_front=hpid->Actual;
+
+
+
+
+	if (fabs(hpid->Error0)<10) {
+
+
+		hpid->ErrorInt=0;
+	}
+
+
+
+
+	if (fabs(hpid->Error0)<30) {
+
+
+		hpid->Out=0;
+	}
+
+
+
+
+
+
+
+
+
+
 }
