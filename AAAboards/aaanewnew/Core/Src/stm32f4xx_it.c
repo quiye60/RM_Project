@@ -304,7 +304,7 @@ void TIM8_UP_TIM13_IRQHandler(void)
 
 	PID_pure(&pid_6020_location,ang);
 	// PID_Update_arg(&pid_6020_location,ang);
-	//pid_6020_speed.Target=pid_6020_location.Out;
+	pid_6020_speed.Target=pid_6020_location.Out;
 
 
 	PID_Update(&pid_6020_speed,speed);

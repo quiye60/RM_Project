@@ -131,16 +131,16 @@ int main(void)
 	pid_6020_speed.DifFront=1;
 
 
-	pid_6020_location.Target=4096;
+	pid_6020_location.Target=4000;
 	pid_6020_location.Kp=0.5;
-	pid_6020_location.Ki=0.005;
-	pid_6020_location.Kd=0.1;
+	pid_6020_location.Ki=0.00;
+	pid_6020_location.Kd=0.3;
 	pid_6020_location.IntSep=20;
 	pid_6020_location.IntMax=20000;
 	pid_6020_location.OutMax=200;
 	pid_6020_location.OutMin=-200;
 	pid_6020_location.DeadZone=10;
-	pid_6020_location.DifFilter=0;
+	pid_6020_location.DifFilter=0.1;
 	pid_6020_location.DifFront=1;
 
 
@@ -225,17 +225,32 @@ int main(void)
 		int up=tar+50;
 		int low=tar-50;
 		int out =pid_6020_speed.Out/100;
+
+		int p=pid_6020_location.Error0*pid_6020_location.Kp;
+		int i= pid_6020_location.ErrorInt*pid_6020_location.Ki;
+		int d=					(1-pid_6020_location.DifFilter)	*(pid_6020_location.Kd * (pid_6020_location.Actual - pid_6020_location.Actual_front))
+					+ pid_6020_location.DifFilter		* pid_6020_location.Actual_front;
+
+
 		u6_printf(
-"ang:%d,\
-speed:%d ,\
-target:%d ,\
-+:%d,\
-%d \n"
-							,ang
-							,speed
-							,tar
-							,up
-							,low);
+				"ang:%d,"
+					"speed:%d ,"
+					"target:%d ,"
+					"+:%d,"
+					"%d,"
+					"P%d,"
+					"I%d,"
+					"D%d \n"
+
+					,ang
+					,speed
+					,tar
+					,up
+					,low
+					,p
+					,i
+					,d
+				);
 
 
 

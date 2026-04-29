@@ -316,7 +316,7 @@ void PID_pure(PID_t *hpid,float actual)
 	if (fabs(hpid->Error0)<30) {
 
 
-		hpid->Out=0;
+		hpid->Out*=0.99;
 	}
 
 
