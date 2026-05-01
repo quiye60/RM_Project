@@ -16,6 +16,8 @@
 #define U3_TX_SIZE 2048
 #define U3_RX_SIZE 2048
 #define U3_RX_MAX  256
+#include "main3.h"
+#include "stm32f4xx_hal_uart.h"
 
 
 extern UART_HandleTypeDef huart1;
@@ -25,8 +27,7 @@ extern UART_HandleTypeDef huart3;
 
 
 // ==================== RX / TX buffer ====================
-extern uint8_t U1_RxBuff[];
-extern uint8_t U1_TxBuff[];
+
 /*
 extern uint8_t U2_RxBuff[];
 extern uint8_t U2_TxBuff[];
@@ -36,35 +37,20 @@ extern uint8_t U3_TxBuff[];
 
 */
 
-typedef struct{
-	uint8_t  *start;
-	uint8_t  *end;
-}LCB;
 
-typedef struct{
-	uint32_t  RxCounter;
-	uint32_t  TxCounter;
-	uint32_t  TxState;
-	LCB       RxLocation[10];
-	LCB       TxLocation[10];
-	LCB      *RxInPtr;
-	LCB      *RxOutPtr;
-	LCB      *RxEndPtr;
-	LCB      *TxInPtr;
-	LCB      *TxOutPtr;
-	LCB      *TxEndPtr;
-	UART_HandleTypeDef uart;
-	DMA_HandleTypeDef dmatx;
-	DMA_HandleTypeDef dmarx;
-	
-}UCB;
+
+
+
+
+
 
 
 extern UCB  ucb1;
 extern UCB  ucb2;
 extern UCB  ucb3;
 
-
+extern uint8_t U1_RxBuff[U1_RX_SIZE];
+extern uint8_t U1_TxBuff[U1_TX_SIZE];
 
 
 

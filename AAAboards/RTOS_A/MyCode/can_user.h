@@ -2,11 +2,16 @@
 #define CAN_USER_H
 
 
+#include "main.h"
+#include "main3.h"
+
+
 void CAN_Filter_FIFO0_AllPass_Init(void);
 
 void CAN_GM6020_Current(const int16_t*	I1234_below_16384 );
 void CAN_GM6020_voltage(const int16_t*	V1234below_25000 );
 
+uint8_t CAN_RxData(CAN_Packet_t* pack);
 
 
 
@@ -14,10 +19,6 @@ void CAN_GM6020_voltage(const int16_t*	V1234below_25000 );
 
 
 
-
-
-
-uint8_t CAN_RxData(uint8_t *Rdata);
 
 
 #endif

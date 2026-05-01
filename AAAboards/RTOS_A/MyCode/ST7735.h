@@ -1,8 +1,8 @@
 
-#ifndef __ST7735_H
-#define __ST7735_H
+#ifndef ST7735_H
+#define ST7735_H
 
-	#include "main.h"
+
 	
 	#define USE_HORIZONTAL 1  //设置横屏或者竖屏显示 1默认,
 

@@ -103,26 +103,40 @@ set(MX_LINK_LIBS
 	:libarm_cortexM4lf_math.a
     STM32_Drivers
     ${TOOLCHAIN_LINK_LIBRARIES}
-    USB_Device_Library	FreeRTOS	
+    USB_Device_Library
+	FreeRTOS
+	
 )
 # Interface library for includes and symbols
-add_library(stm32cubemx INTERFACE)
+add_library(stm32cubemx INTERFACE
+        ../../MyCode/can_user.h
+        ../../MyCode/uart_printf.h
+        ../../MyCode/freertos_extern.h)
 target_include_directories(stm32cubemx INTERFACE ${MX_Include_Dirs})
 target_compile_definitions(stm32cubemx INTERFACE ${MX_Defines_Syms})
 
 # Create STM32_Drivers static library
-add_library(STM32_Drivers OBJECT)
+add_library(STM32_Drivers OBJECT
+        ../../MyCode/can_user.h
+        ../../MyCode/uart_printf.h
+        ../../MyCode/freertos_extern.h)
 target_sources(STM32_Drivers PRIVATE ${STM32_Drivers_Src})
 target_link_libraries(STM32_Drivers PUBLIC stm32cubemx)
 
 
 # Create USB_Device_Library static library
-add_library(USB_Device_Library OBJECT)
+add_library(USB_Device_Library OBJECT
+        ../../MyCode/can_user.h
+        ../../MyCode/uart_printf.h
+        ../../MyCode/freertos_extern.h)
 target_sources(USB_Device_Library PRIVATE ${USB_Device_Library_Src})
 target_link_libraries(USB_Device_Library PUBLIC stm32cubemx)
 
 # Create FreeRTOS static library
-add_library(FreeRTOS OBJECT)
+add_library(FreeRTOS OBJECT
+        ../../MyCode/can_user.h
+        ../../MyCode/uart_printf.h
+        ../../MyCode/freertos_extern.h)
 target_sources(FreeRTOS PRIVATE ${FreeRTOS_Src})
 target_link_libraries(FreeRTOS PUBLIC stm32cubemx)
 

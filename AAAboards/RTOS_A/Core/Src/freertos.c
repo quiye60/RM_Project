@@ -25,7 +25,10 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdlib.h>
 
+#include "main3.h"
+#include "uart_printf.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -51,21 +54,21 @@
 osThreadId_t ledHandle;
 const osThreadAttr_t led_attributes = {
   .name = "led",
-  .stack_size = 180 * 4,
+  .stack_size = 300 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for uart */
 osThreadId_t uartHandle;
 const osThreadAttr_t uart_attributes = {
   .name = "uart",
-  .stack_size = 500 * 4,
-  .priority = (osPriority_t) osPriorityNormal7,
+  .stack_size = 1000 * 4,
+  .priority = (osPriority_t) osPriorityRealtime7,
 };
 /* Definitions for can */
 osThreadId_t canHandle;
 const osThreadAttr_t can_attributes = {
   .name = "can",
-  .stack_size = 128 * 4,
+  .stack_size = 700 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for GM6020 */
@@ -80,10 +83,20 @@ osMessageQueueId_t uart_QHandle;
 const osMessageQueueAttr_t uart_Q_attributes = {
   .name = "uart_Q"
 };
+/* Definitions for canrx_Q */
+osMessageQueueId_t canrx_QHandle;
+const osMessageQueueAttr_t canrx_Q_attributes = {
+  .name = "canrx_Q"
+};
 /* Definitions for U6RX_DMA */
 osSemaphoreId_t U6RX_DMAHandle;
 const osSemaphoreAttr_t U6RX_DMA_attributes = {
   .name = "U6RX_DMA"
+};
+/* Definitions for canfifo0 */
+osSemaphoreId_t canfifo0Handle;
+const osSemaphoreAttr_t canfifo0_attributes = {
+  .name = "canfifo0"
 };
 
 /* Private function prototypes -----------------------------------------------*/
@@ -117,6 +130,9 @@ void MX_FREERTOS_Init(void) {
   /* creation of U6RX_DMA */
   U6RX_DMAHandle = osSemaphoreNew(1, 0, &U6RX_DMA_attributes);
 
+  /* creation of canfifo0 */
+  canfifo0Handle = osSemaphoreNew(3, 0, &canfifo0_attributes);
+
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
   /* USER CODE END RTOS_SEMAPHORES */
@@ -127,7 +143,10 @@ void MX_FREERTOS_Init(void) {
 
   /* Create the queue(s) */
   /* creation of uart_Q */
-  uart_QHandle = osMessageQueueNew (20, sizeof(uint8_t), &uart_Q_attributes);
+  uart_QHandle = osMessageQueueNew (10, sizeof(UART_Packet_t*), &uart_Q_attributes);
+
+  /* creation of canrx_Q */
+  canrx_QHandle = osMessageQueueNew (16, sizeof(CAN_Packet_t*), &canrx_Q_attributes);
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
@@ -173,20 +192,6 @@ __weak void StartLed(void *argument)
   {
 
 
-u6_printf("led \n");
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -206,10 +211,22 @@ u6_printf("led \n");
 __weak void StartUart(void *argument)
 {
   /* USER CODE BEGIN StartUart */
+
+
+	UART_Packet_t *pkt;
+
   /* Infinite loop */
   for(;;)
   {
 
+  	osMessageQueueGet(uart_QHandle, &pkt, NULL, osWaitForever);
+
+  	pkt->data[pkt->len] = '\0';
+
+    u6_printf("RX:%s\r\n", pkt->data);
+
+
+  	free(pkt);
 
 
 
@@ -219,14 +236,6 @@ __weak void StartUart(void *argument)
 
 
 
-
-
-
-
-
-
-
-  	 osDelay(1000);
   }
 
   /* USER CODE END StartUart */
@@ -242,12 +251,40 @@ __weak void StartUart(void *argument)
 __weak void StartCan(void *argument)
 {
   /* USER CODE BEGIN StartCan */
+
+
+
+
+
+	CAN_Packet_t *pkt;
+
+
   /* Infinite loop */
   for(;;)
   {
 
+	u6_printf("can pkt wait \n");
+
+  	osMessageQueueGet(uart_QHandle, &pkt, NULL, osWaitForever);
+
+  	switch(pkt->ID) {
 
 
+
+
+
+
+
+
+
+	default:
+  			break;
+
+  	}
+  	pkt->data[8]=0;
+  	u6_printf("CAN  RX:%s\r\n", pkt->data);
+
+  	free(pkt);
 
 
 

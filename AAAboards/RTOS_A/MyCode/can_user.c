@@ -1,6 +1,15 @@
+#include <stdlib.h>
+
+#include "can.h"
+#include "cmsis_os2.h"
 #include "main.h"
 
-uint8_t Rdata[8];
+#include "uart_printf.h"
+#include "freertos_extern.h"
+
+
+
+CAN_Packet_t can1_RX;
 uint16_t RxID=0x111;
 
 
@@ -95,35 +104,27 @@ void CAN_GM6020_voltage(const int16_t*	V1234below_25000 ){//测试
 	
 	}
 
-HAL_StatusTypeDef res = HAL_ERROR;
-uint8_t CAN_RxData(uint8_t *Rdata){
-
-
-	res = HAL_CAN_GetRxMessage(&hcan1,CAN_RX_FIFO0,&can1_rx,Rdata);
-	RxID=can1_rx.StdId;
 
 
 
+uint8_t CAN_RxData(CAN_Packet_t * pack) {
+
+	HAL_StatusTypeDef res=HAL_CAN_GetRxMessage(&hcan1,CAN_RX_FIFO0,&can1_rx,pack->data);
+	pack->ID=can1_rx.StdId|can1_rx.ExtId;
 	return res;
-
-
 }
+
 
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef  *hcan_){
 
     
 	if(hcan_->Instance == CAN1){
 
-		CAN_RxData(Rdata);
-		ang =(uint16_t)((Rdata)[0] << 8 | (Rdata)[1]);
-		speed=(int16_t)((Rdata)[2] << 8 | (Rdata)[3]);
-		current=(int16_t)((Rdata)[4] << 8 | (Rdata)[5]);
 
 
-
-
-		
-
+		CAN_Packet_t *pkt = (CAN_Packet_t *)malloc(sizeof(CAN_Packet_t));
+		CAN_RxData(pkt);
+		osMessageQueuePut(canrx_QHandle,&pkt,0,osWaitForever);
 
 
 	}

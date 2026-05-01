@@ -1,13 +1,17 @@
 #include "main.h"
+#include "uart_printf.h"
+#include <stdio.h>
+
 #include "FreeRTOS.h"
-
-
+#include "main3.h"
+#include "usart.h"
+#include "stdarg.h"
 
 UCB  ucb1;
 UCB  ucb2;
 UCB  ucb3;
 
-uint8_t U1_RxBuff[U1_RX_SIZE]="";
+uint8_t U1_RxBuff[U1_RX_SIZE]="aaaaa";
 uint8_t U1_TxBuff[U1_TX_SIZE];
 
 
@@ -117,16 +121,19 @@ void u3_printf(char *fmt,...){
 *	uart中断服务函数
 *
 ***************************************/
-
+/*
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
+
+
+
 	if(huart->Instance == USART1){
+
+
 
 	}
 	if (huart->Instance == USART6) {
-
-
-	//	osSemaphoreRelease()
+		osSemaphoreRelease(U6RX_DMAHandle);
 	}
 
 
@@ -135,7 +142,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
 
 
-
+*/
 
 
 

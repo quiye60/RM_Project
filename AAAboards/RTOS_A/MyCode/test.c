@@ -1,5 +1,10 @@
 #include "test.h"
 
+#include <stdint.h>
+
+#include "ST7735.h"
+#include "stm32f4xx_hal.h"
+
 void Test_Display(void)
 {
     uint16_t i;

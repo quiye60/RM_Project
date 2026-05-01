@@ -31,7 +31,13 @@
 
 #include <tgmath.h>
 
+#include "freertos_extern.h"
 #include "main2.h"
+#include "PID.h"
+#include "can_user.h"
+#include "uart_printf.h"
+
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -95,6 +101,8 @@ int16_t voltage6020[4]={0,0,0,0};
 
 /* USER CODE END 0 */
 
+
+
 /**
   * @brief  The application entry point.
   * @retval int
@@ -110,6 +118,7 @@ int main(void)
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
+
   /* USER CODE BEGIN Init */
 
 
@@ -159,19 +168,16 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA_Init();
-  MX_USART1_UART_Init();
   MX_CAN1_Init();
-  MX_UART7_Init();
   MX_USART6_UART_Init();
   MX_USART3_UART_Init();
   MX_TIM12_Init();
-  MX_UART8_Init();
   /* USER CODE BEGIN 2 */
 	CAN_Filter_FIFO0_AllPass_Init();
 
 
 	HAL_UART_Receive_DMA(&huart6,U1_RxBuff,256);
-	__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
+	__HAL_UART_ENABLE_IT(&huart6, UART_IT_IDLE);
 
 
 
@@ -222,45 +228,48 @@ int main(void)
 	  
 
   	//CAN_GM6020_Current(current6020);
-	if (update) {
-		int tar=pid_6020_location.Target;
-		int up=tar+50;
-		int low=tar-50;
-		int out =pid_6020_speed.Out/100;
+	// if (update) {
+	// 	int tar=pid_6020_location.Target;
+	// 	int up=tar+50;
+	// 	int low=tar-50;
+	// 	int out =pid_6020_speed.Out/100;
+	//
+	// 	int p=pid_6020_location.Error0*pid_6020_location.Kp;
+	// 	int i= pid_6020_location.ErrorInt*pid_6020_location.Ki;
+	// 	int d=					(1-pid_6020_location.DifFilter)	*(pid_6020_location.Kd * (pid_6020_location.Actual - pid_6020_location.Actual_front))
+	// 				+ pid_6020_location.DifFilter		* pid_6020_location.Actual_front;
+	//
+	//
+	// 	u6_printf(
+	// 			"ang:%d,"
+	// 				"speed:%d ,"
+	// 				"target:%d ,"
+	// 				"+:%d,"
+	// 				"%d,"
+	// 				"P%d,"
+	// 				"I%d,"
+	// 				"D%d \n"
+	//
+	// 				,ang
+	// 				,speed
+	// 				,tar
+	// 				,up
+	// 				,low
+	// 				,p
+	// 				,i
+	// 				,d
+	// 			);
+	//
+	//
+	//
+	//
+	// 	CAN_GM6020_voltage(voltage6020);
+	// 	//CAN_GM6020_voltage(current6020);
+	// 	update=0;
+	// }
 
-		int p=pid_6020_location.Error0*pid_6020_location.Kp;
-		int i= pid_6020_location.ErrorInt*pid_6020_location.Ki;
-		int d=					(1-pid_6020_location.DifFilter)	*(pid_6020_location.Kd * (pid_6020_location.Actual - pid_6020_location.Actual_front))
-					+ pid_6020_location.DifFilter		* pid_6020_location.Actual_front;
 
 
-		u6_printf(
-				"ang:%d,"
-					"speed:%d ,"
-					"target:%d ,"
-					"+:%d,"
-					"%d,"
-					"P%d,"
-					"I%d,"
-					"D%d \n"
-
-					,ang
-					,speed
-					,tar
-					,up
-					,low
-					,p
-					,i
-					,d
-				);
-
-
-
-
-		CAN_GM6020_voltage(voltage6020);
-		//CAN_GM6020_voltage(current6020);
-		update=0;
-	}
 	HAL_Delay(1);
 
 

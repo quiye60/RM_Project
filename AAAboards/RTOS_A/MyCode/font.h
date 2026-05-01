@@ -1,9 +1,7 @@
-#ifndef __FONT_H_
-#define __FONT_H_
+#ifndef FONT_H_
+#define FONT_H_
 
-#include <stdio.h>
-#include <stdint.h>
-#include <stdlib.h>
+
 
 
 

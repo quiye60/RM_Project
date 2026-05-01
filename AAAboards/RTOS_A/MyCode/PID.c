@@ -141,13 +141,13 @@ void PID_Update_arg(PID_t *hpid,float actual)
 
 
 	if (fabs(hpid->Error0)<pid_6020_location.IntSep) {
-		if (speed>0) {
+		if (actual>0) {
 			if (hpid->Error0>0) {//同方向缓速
 
 				hpid->Out*=0.99;
 			}else {
 
-				hpid->Out=-fabs(0.99*speed);
+				hpid->Out=-fabs(0.99*actual);
 			}
 
 		}else//speed<0
@@ -157,7 +157,7 @@ void PID_Update_arg(PID_t *hpid,float actual)
 				hpid->Out*=0.99;
 			}else {
 
-				hpid->Out=fabs(0.99*speed);
+				hpid->Out=fabs(0.99*actual);
 
 			}
 
